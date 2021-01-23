@@ -1,0 +1,72 @@
+<form [formGroup]="userForm">
+  <mat-card class="user-form">
+    <mat-card-header>
+      <mat-card-title>User Form</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Please enter name" formControlName="name">
+            <mat-error *ngIf="userForm.get('name').invalid">Name is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Please enter email" formControlName="email">
+            <mat-error *ngIf="isEmailControlHasError(EmailErrorType.email)">Please enter valid email!</mat-error>
+            <mat-error *ngIf="isEmailControlHasError(EmailErrorType.required)">Email is required!</mat-error>
+            <mat-error *ngIf="isEmailControlHasError(EmailErrorType.isExist)">Email already exist!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Please enter password" formControlName="password">
+            <mat-error *ngIf="userForm.get('password').invalid">Password is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Please repeat password" formControlName="passwordRepeat">
+            <mat-error *ngIf="userForm.get('passwordRepeat').invalid">Password repeat is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <br>
+      <mat-card-title>Friends</mat-card-title>
+      <ng-container
+        formArrayName="friends"
+        *ngFor="let friend of friends.controls; index as i"
+      >
+        <ng-container
+          [formGroupName]="i"
+        >
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Please enter friends name" formControlName="name">
+                <mat-error *ngIf="isNameControlHasError(i)">Friends Name is required!</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Please enter friends email" formControlName="friendsEmail">
+                <mat-error *ngIf="isFriendsEmailHasError(i, EmailErrorType.required)"> Friends Email is required!</mat-error>
+                <mat-error *ngIf="isFriendsEmailHasError(i, EmailErrorType.email)">Please enter valid email!</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [disabled]="friends.invalid" (click)="addFriend()" type="button">Add friend</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
